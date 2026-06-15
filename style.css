@@ -1,0 +1,754 @@
+/* =========================================================
+   DESIGN TOKENS
+   따뜻하고 차분한 색감 — 과한 핑크/하트 배제, 미니멀 지향
+   ========================================================= */
+:root {
+  /* 배경 톤 — 여름 햇살 크림 + 청량한 하늘/바다 */
+  --cream: #f4f6f1;        /* Fresh Cream — 살짝 초록빛 도는 밝은 배경 */
+  --beige: #e6f0ec;        /* Soft Mint Sand — 강조 섹션 (바다 거품 느낌) */
+  --white: #fdfffc;        /* 카드 배경 */
+  --sky: #cfe7ec;          /* 옅은 하늘빛 (그라데이션용) */
+
+  /* 포인트 컬러 — 청량한 여름 그린/블루 */
+  --sage: #6fb1a6;         /* Seafoam Green — 시원한 포인트 */
+  --sage-deep: #4f8f86;    /* 진한 청록 (호버/강조) */
+  --brown: #c79a6b;        /* Warm Sand — 모래/햇살 톤 */
+  --brown-deep: #b07d44;   /* 진한 모래빛 (텍스트 강조) */
+
+  /* 텍스트 */
+  --ink: #2f3a37;          /* 본문 — 충분한 명암 대비 */
+  --ink-soft: #5d6b66;     /* 보조 텍스트 */
+  --ink-faint: #93a09a;    /* 힌트/캡션 */
+
+  /* 시스템 */
+  --radius: 22px;
+  --radius-sm: 14px;
+  --shadow-soft: 0 18px 50px -24px rgba(80, 66, 50, 0.35);
+  --shadow-card: 0 22px 60px -30px rgba(80, 66, 50, 0.45);
+  --maxw: 600px;           /* 데스크톱에서도 모바일 폭 유지 */
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1); /* 부드러운 감속 */
+}
+
+/* =========================================================
+   RESET & BASE
+   ========================================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--ink);
+  background: var(--cream);
+  line-height: 1.85;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  /* 노치/홈바 안전 영역 */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+}
+
+p {
+  word-break: keep-all; /* 한글 단어 단위 줄바꿈 */
+}
+
+/* 첫 로딩 시 전체가 부드럽게 나타남 (JS 의존 없음) */
+body {
+  animation: pageFade 0.7s var(--ease) both;
+}
+
+@keyframes pageFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* =========================================================
+   LAYOUT — 공통 섹션
+   ========================================================= */
+.section {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: clamp(64px, 14vw, 110px) clamp(20px, 6vw, 36px);
+}
+
+.section__title {
+  font-family: "Gowun Batang", serif;
+  font-size: clamp(1.45rem, 6vw, 1.9rem);
+  font-weight: 700;
+  color: var(--brown-deep);
+  text-align: center;
+  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+  /* 아이콘 + 텍스트 가운데 정렬 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+/* 섹션 제목 라인 아이콘 */
+.title-ico {
+  width: 1.05em;
+  height: 1.05em;
+  flex: 0 0 auto;
+  color: var(--sage-deep);
+  transform: translateY(1px);
+}
+
+.section__hint {
+  text-align: center;
+  color: var(--ink-faint);
+  font-size: 0.9rem;
+  margin-bottom: 30px;
+}
+
+/* 공용 카드 */
+.card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: clamp(28px, 7vw, 44px);
+  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease),
+    opacity 0.9s var(--ease);
+}
+
+/* 카드 인터랙션 transition (entrance용 .reveal보다 우선 적용)
+   opacity는 등장용으로 천천히, transform/그림자는 빠르게 반응 */
+.card.reveal {
+  transition: opacity 0.9s var(--ease), transform 0.45s var(--ease),
+    box-shadow 0.45s var(--ease);
+}
+
+/* 마이크로 인터랙션 — 데스크톱 호버 시 살짝 떠오름 */
+@media (hover: hover) and (pointer: fine) {
+  .card.reveal.is-visible:hover {
+    transform: translateY(-5px);
+  }
+  .card:hover {
+    box-shadow: 0 30px 72px -30px rgba(80, 66, 50, 0.5);
+  }
+}
+
+/* 모바일 탭 시 가벼운 눌림 피드백 */
+.card.reveal.is-visible:active {
+  transform: translateY(-1px) scale(0.992);
+}
+
+/* 섹션 구분 — 잎사귀 디바이더 */
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  max-width: 230px;
+  margin: 0 auto;
+  color: var(--sage);
+}
+
+.divider__line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(111, 177, 166, 0.55),
+    transparent
+  );
+}
+
+.divider__leaf {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 16px;
+  opacity: 0.85;
+}
+
+/* =========================================================
+   SECTION 1 — HERO
+   ========================================================= */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh; /* 모바일 주소창 대응 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 24px 90px;
+  /* 위쪽 맑은 하늘빛 → 아래 햇살 크림으로 번지는 여름 글로우 */
+  background:
+    radial-gradient(130% 90% at 50% -10%, var(--sky) 0%, #eef7f2 42%, var(--cream) 72%),
+    var(--cream);
+}
+
+.hero__inner {
+  max-width: 480px;
+}
+
+/* Hero 꽃 라인 드로잉 — 살짝 떠오르며 등장 */
+.hero__flower {
+  display: block;
+  width: clamp(42px, 12vw, 54px);
+  height: auto;
+  margin: 0 auto 26px;
+  color: var(--sage-deep);
+  opacity: 0.92;
+  animation: floatY 5.5s ease-in-out infinite;
+}
+
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.hero__eyebrow {
+  font-size: 0.95rem;
+  letter-spacing: 0.14em;
+  color: var(--sage-deep);
+  margin-bottom: 22px;
+}
+
+.hero__title {
+  font-family: "Gowun Batang", serif;
+  font-size: clamp(2rem, 9vw, 2.9rem);
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+
+.hero__sub {
+  margin-top: 22px;
+  font-size: clamp(1rem, 4.2vw, 1.12rem);
+  color: var(--ink-soft);
+  font-weight: 300;
+}
+
+/* 스크롤 유도 아이콘 */
+.scroll-cue {
+  position: absolute;
+  bottom: calc(28px + env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--ink-faint);
+  padding: 12px;            /* 터치 영역 확보 */
+}
+
+.scroll-cue__text {
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.scroll-cue__arrow {
+  width: 11px;
+  height: 11px;
+  border-right: 1.6px solid var(--sage);
+  border-bottom: 1.6px solid var(--sage);
+  transform: rotate(45deg);
+  animation: cueBounce 2s var(--ease) infinite;
+}
+
+@keyframes cueBounce {
+  0%, 100% { transform: rotate(45deg) translate(0, 0); opacity: 0.4; }
+  50%      { transform: rotate(45deg) translate(4px, 4px); opacity: 1; }
+}
+
+/* =========================================================
+   SECTION 2 — MESSAGE CARD (Glassmorphism)
+   ========================================================= */
+.glass {
+  background: rgba(255, 253, 250, 0.62);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: var(--shadow-soft);
+}
+
+#message p {
+  font-size: clamp(1rem, 4.3vw, 1.08rem);
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+
+/* 편지 문단 — 한 줄씩 써내려가듯 순차 등장 */
+.letter-line {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  will-change: opacity, transform;
+}
+
+.letter-line.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.message__hi {
+  font-family: "Gowun Batang", serif;
+  font-size: clamp(1.2rem, 5vw, 1.4rem) !important;
+  font-weight: 700;
+  color: var(--brown-deep);
+  margin-bottom: 24px !important;
+}
+
+/* 타이핑 중 — 깜빡이는 커서 + 줄높이 흔들림 방지 */
+.message__hi[data-typing] {
+  min-height: 1.9em;
+}
+
+.message__hi.is-typing::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  margin-left: 3px;
+  vertical-align: -0.12em;
+  background: var(--brown);
+  animation: caretBlink 0.8s steps(1) infinite;
+}
+
+@keyframes caretBlink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+.message__spacer {
+  margin-top: 26px;
+}
+
+.message__sign {
+  margin-top: 30px !important;
+  text-align: right;
+  font-family: "Gowun Batang", serif;
+  font-size: 1.2rem !important;
+  color: var(--brown-deep);
+}
+
+/* =========================================================
+   SECTION 3 — TRAVEL INFO
+   ========================================================= */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.info-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: clamp(26px, 6vw, 34px) 18px;
+}
+
+.info-card__icon {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 6px;
+  color: var(--sage-deep);
+}
+
+.info-card__label {
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  color: var(--sage-deep);
+  font-weight: 500;
+}
+
+.info-card__value {
+  font-family: "Gowun Batang", serif;
+  font-size: clamp(1.1rem, 4.5vw, 1.3rem);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* 좁은 화면에서는 세로 정렬 */
+@media (max-width: 380px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   SECTION 4 — CHECKLIST
+   ========================================================= */
+.checklist {
+  list-style: none;
+  padding: clamp(12px, 4vw, 20px) clamp(14px, 4vw, 24px);
+}
+
+.checklist__item + .checklist__item {
+  border-top: 1px solid rgba(120, 101, 83, 0.1);
+}
+
+.checklist__item label {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  /* 터치 영역 최소 44px 이상 */
+  min-height: 44px;
+  padding: 12px 4px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 실제 체크박스는 숨기되 접근성 유지 */
+.checklist__item input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* 커스텀 체크박스 */
+.checklist__box {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  margin-top: 1px;
+  border: 2px solid var(--sage);
+  border-radius: 8px;
+  background: transparent;
+  position: relative;
+  transition: background 0.3s var(--ease), border-color 0.3s var(--ease),
+    transform 0.2s var(--ease);
+}
+
+/* 체크 표시 (✓) */
+.checklist__box::after {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 3px;
+  width: 6px;
+  height: 11px;
+  border-right: 2.4px solid #fff;
+  border-bottom: 2.4px solid #fff;
+  transform: rotate(45deg) scale(0);
+  transition: transform 0.25s var(--ease);
+}
+
+.checklist__text {
+  font-size: clamp(0.96rem, 4vw, 1.04rem);
+  color: var(--ink);
+  transition: color 0.3s var(--ease);
+  padding-top: 1px;
+}
+
+.checklist__note {
+  display: block;
+  font-style: normal;
+  font-size: 0.82rem;
+  color: var(--ink-faint);
+  margin-top: 2px;
+}
+
+/* 체크된 상태 */
+.checklist__item input:checked + .checklist__box {
+  background: var(--sage);
+  border-color: var(--sage);
+}
+
+.checklist__item input:checked + .checklist__box::after {
+  transform: rotate(45deg) scale(1);
+}
+
+/* 체크 시 짧은 팝 애니메이션 */
+.checklist__item input:checked + .checklist__box {
+  animation: pop 0.35s var(--ease);
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+/* 체크된 항목 텍스트는 부드럽게 흐리고 취소선 */
+.checklist__item input:checked ~ .checklist__text {
+  color: var(--ink-faint);
+  text-decoration: line-through;
+  text-decoration-color: rgba(155, 147, 137, 0.6);
+}
+
+/* 키보드 포커스 표시 (접근성) */
+.checklist__item input:focus-visible + .checklist__box {
+  outline: 3px solid rgba(138, 154, 130, 0.5);
+  outline-offset: 3px;
+}
+
+/* 진행도 — 게이지 바 + 텍스트 */
+.progress {
+  margin-top: 24px;
+}
+
+.progress__bar {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(79, 143, 134, 0.16);
+  overflow: hidden;
+}
+
+.progress__fill {
+  display: block;
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--sage), var(--sage-deep));
+  /* 차오르는 애니메이션 */
+  transition: width 0.6s var(--ease);
+}
+
+.progress__text {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 0.92rem;
+  color: var(--sage-deep);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* =========================================================
+   SECTION 5 — PROMISE
+   ========================================================= */
+.promise-card {
+  background: linear-gradient(160deg, var(--white), #fbf6ee);
+}
+
+.promise-list {
+  list-style: none;
+}
+
+.promise-list li {
+  position: relative;
+  padding: 12px 0 12px 30px;
+  font-size: clamp(0.98rem, 4vw, 1.06rem);
+  color: var(--ink);
+}
+
+.promise-list li + li {
+  border-top: 1px dashed rgba(156, 135, 117, 0.22);
+}
+
+/* 작은 새싹 점 마커 */
+.promise-list li::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50% 50% 50% 0;
+  background: var(--sage);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+/* =========================================================
+   SECTION 6 — FINAL (베이지 톤)
+   ========================================================= */
+.section--warm {
+  /* 바다 거품빛으로 잔잔하게 전환 */
+  background: linear-gradient(180deg, var(--cream) 0%, var(--sky) 24%, var(--beige) 60%, var(--beige) 100%);
+  max-width: none;     /* 배경을 전체 폭으로 */
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.final {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  text-align: center;
+  background: rgba(255, 253, 250, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+}
+
+.final__title {
+  font-family: "Gowun Batang", serif;
+  font-size: clamp(1.4rem, 6vw, 1.8rem);
+  font-weight: 700;
+  color: var(--brown-deep);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+.final p {
+  font-size: clamp(1rem, 4.2vw, 1.08rem);
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+.final__name {
+  margin-top: 24px !important;
+  font-family: "Gowun Batang", serif;
+  font-size: 1.25rem !important;
+  font-weight: 700;
+  color: var(--brown-deep);
+}
+
+.final__love {
+  margin-top: 26px !important;
+  font-family: "Gowun Batang", serif;
+  font-size: 1.2rem !important;
+  font-weight: 700;
+  color: var(--brown-deep);
+}
+
+/* =========================================================
+   SECTION 7 — FOOTER
+   ========================================================= */
+.footer {
+  text-align: center;
+  padding: clamp(48px, 12vw, 76px) 24px calc(48px + env(safe-area-inset-bottom));
+  background: var(--beige);
+}
+
+.footer__mark {
+  display: block;
+  width: 26px;
+  height: 26px;
+  margin: 0 auto 16px;
+  color: var(--sage);
+  opacity: 0.9;
+}
+
+.footer__sign {
+  font-family: "Gowun Batang", serif;
+  font-size: clamp(0.9rem, 3.8vw, 1rem);
+  line-height: 1.9;
+  color: var(--brown);
+  letter-spacing: 0.02em;
+}
+
+/* =========================================================
+   PETALS — 은은한 꽃잎 (배경 + 최하단 버스트)
+   ========================================================= */
+.petal-field {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.petal {
+  position: absolute;
+  top: -8vh;
+  width: 14px;
+  height: 14px;
+  background: var(--petal-color, #e9d9c4);
+  /* 꽃잎 형태: 위아래 둥근 모서리 */
+  border-radius: 75% 5% 75% 5%;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: petalFall var(--dur, 14s) linear var(--delay, 0s) infinite;
+}
+
+@keyframes petalFall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% { opacity: var(--maxop, 0.55); }
+  90% { opacity: var(--maxop, 0.55); }
+  100% {
+    transform: translate3d(var(--drift, 40px), 110vh, 0) rotate(420deg);
+    opacity: 0;
+  }
+}
+
+/* 최하단 도달 시 한 번 재생되는 꽃잎 버스트 */
+.petal--burst {
+  animation: petalBurst 3.4s var(--ease) forwards;
+}
+
+@keyframes petalBurst {
+  0% {
+    transform: translate3d(0, -6vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  12% { opacity: 0.8; }
+  100% {
+    transform: translate3d(var(--drift, 30px), 90vh, 0) rotate(500deg);
+    opacity: 0;
+  }
+}
+
+/* =========================================================
+   REVEAL ANIMATION (Intersection Observer)
+   ========================================================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(34px);
+  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* data-delay 로 순차 등장 */
+.reveal[data-delay="1"] { transition-delay: 0.12s; }
+.reveal[data-delay="2"] { transition-delay: 0.24s; }
+
+/* =========================================================
+   접근성 — 모션 최소화 선호 존중
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .petal-field { display: none; }
+}
+
+/* =========================================================
+   데스크톱 보정 — 중앙 정렬된 모바일 폭 유지
+   ========================================================= */
+@media (min-width: 768px) {
+  body {
+    background:
+      radial-gradient(100% 60% at 50% 0%, var(--sky), var(--cream) 58%),
+      var(--cream);
+  }
+}

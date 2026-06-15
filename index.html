@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <!-- 모바일 우선 설계: 기기 너비에 맞추고, 노치(safe-area) 대응 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <!-- 모바일 브라우저 상단바 색 — 여름 크림톤에 맞춤 -->
+  <meta name="theme-color" content="#eef7f2" />
+
+  <!-- SNS 미리보기 / 의미 정보 -->
+  <title>여행 시작 전, 작은 선물</title>
+  <meta name="description" content="꽃보다 더 예쁜 추억을 만들러 가자 — 경주 여행을 위한 작은 선물." />
+  <meta property="og:title" content="여행 시작 전, 작은 선물" />
+  <meta property="og:description" content="꽃보다 더 예쁜 추억을 만들러 가자." />
+  <meta property="og:type" content="website" />
+
+  <!-- 폰트: 가독성 높은 한글 산세리프 + 살짝의 감성용 세리프 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ===================== 은은한 꽃잎 배경 레이어 ===================== -->
+  <!-- 전 구간 위로 떠다니는 미세한 꽃잎. JS가 동적으로 채움. -->
+  <div class="petal-field" id="petalField" aria-hidden="true"></div>
+
+  <main>
+    <!-- ========================================================= -->
+    <!-- SECTION 1 — HERO                                           -->
+    <!-- ========================================================= -->
+    <section class="hero" id="hero">
+      <div class="hero__inner reveal">
+        <!-- 가는 선으로 그린 꽃 한 줄기 — Hero 시각 앵커 -->
+        <svg
+          class="hero__flower"
+          viewBox="0 0 48 74"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M24 70 V30" />
+          <path d="M24 52 C15 49 11 42 13 36 C21 38 25 45 24 52 Z" />
+          <path d="M24 44 C33 41 37 34 35 28 C27 30 23 37 24 44 Z" />
+          <g transform="translate(24,19)">
+            <ellipse cx="0" cy="-9" rx="3.4" ry="6.4" />
+            <ellipse cx="0" cy="-9" rx="3.4" ry="6.4" transform="rotate(72)" />
+            <ellipse cx="0" cy="-9" rx="3.4" ry="6.4" transform="rotate(144)" />
+            <ellipse cx="0" cy="-9" rx="3.4" ry="6.4" transform="rotate(216)" />
+            <ellipse cx="0" cy="-9" rx="3.4" ry="6.4" transform="rotate(288)" />
+            <circle r="2.7" />
+          </g>
+        </svg>
+
+        <p class="hero__eyebrow">여행 시작 전, 작은 선물</p>
+        <h1 class="hero__title">
+          꽃보다 더 예쁜<br />추억을 만들러 가자
+        </h1>
+        <p class="hero__sub">함께라서 더 설레는 여행의 시작</p>
+      </div>
+
+      <!-- 스크롤 유도 아이콘 -->
+      <a class="scroll-cue" href="#message" aria-label="아래로 스크롤">
+        <span class="scroll-cue__text">scroll</span>
+        <span class="scroll-cue__arrow"></span>
+      </a>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- SECTION 2 — MESSAGE CARD (Glassmorphism)                  -->
+    <!-- ========================================================= -->
+    <section class="section" id="message">
+      <article class="card glass reveal">
+        <p class="message__hi" data-typing>안녕 다연아</p>
+
+        <p>
+          우리가 100일을 기념하며 함께 떠나는 오늘도 나에게는 특별한 날이라서
+          작은 선물을 준비해봤어.
+        </p>
+
+        <p>
+          이번 여행이 우리에게 또 하나의 소중한 추억으로 남았으면 하는 마음에
+          이렇게 꽃을 준비했어.
+        </p>
+
+        <p>
+          그리고 혹시 몽이가 꽃에 관심을 보일까 봐 고양이에게 위험한 꽃들은
+          빼달라고 부탁했어.
+        </p>
+
+        <p>그러니까 몽이 걱정은 하지 않아도 돼 😊</p>
+
+        <p>우리 공주님이 마음에 들어했으면 좋겠다.</p>
+
+        <p class="message__spacer">
+          항상 내 곁에 있어줘서,<br />
+          나를 귀여워해줘서,<br />
+          사랑해줘서 고맙고,<br />
+          이번 여행도 함께해줘서 고마워.
+        </p>
+
+        <p class="message__spacer">
+          이번 여행에서는 잠시 바쁜 일들은 내려놓고,<br />
+          맛있는 것도 많이 먹고,<br />
+          예쁜 풍경도 많이 보고,<br />
+          사진도 많이 찍고,<br />
+          많이 웃으면서 즐겁게 다녀오자.
+        </p>
+
+        <p class="message__spacer">사랑해 ❤️</p>
+
+        <p class="message__sign">대경이가</p>
+      </article>
+    </section>
+
+    <!-- 섹션 구분 — 작은 잎사귀 디바이더 -->
+    <div class="divider reveal" aria-hidden="true">
+      <span class="divider__line"></span>
+      <svg class="divider__leaf" viewBox="0 0 28 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 14V3" />
+        <path d="M14 9C9 9 6 6 6 2c5 0 8 3 8 7Z" />
+        <path d="M14 11c5 0 8-3 8-7-5 0-8 3-8 7Z" />
+      </svg>
+      <span class="divider__line"></span>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- SECTION 3 — TRAVEL INFORMATION                            -->
+    <!-- ========================================================= -->
+    <section class="section" id="info">
+      <h2 class="section__title reveal">
+        <svg class="title-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 4 3 6.5v13L9 17l6 2.5 6-2.5v-13L15 6.5 9 4Z" />
+          <path d="M9 4v13M15 6.5v13" />
+        </svg>
+        여행 정보
+      </h2>
+      <div class="info-grid">
+        <article class="card info-card reveal">
+          <!-- 위치 핀 -->
+          <svg class="info-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 21s-7-6.4-7-11.5a7 7 0 0 1 14 0C19 14.6 12 21 12 21Z" />
+            <circle cx="12" cy="9.5" r="2.5" />
+          </svg>
+          <span class="info-card__label">여행지</span>
+          <span class="info-card__value">경주</span>
+        </article>
+        <article class="card info-card reveal" data-delay="1">
+          <!-- 캘린더 -->
+          <svg class="info-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="4" y="5" width="16" height="15" rx="2.5" />
+            <path d="M4 9.5h16M8.5 3v4M15.5 3v4" />
+          </svg>
+          <span class="info-card__label">여행 날짜</span>
+          <span class="info-card__value">2026년 6월 24일<br />~ 2026년 6월 25일</span>
+        </article>
+      </div>
+    </section>
+
+    <!-- 섹션 구분 — 작은 잎사귀 디바이더 -->
+    <div class="divider reveal" aria-hidden="true">
+      <span class="divider__line"></span>
+      <svg class="divider__leaf" viewBox="0 0 28 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 14V3" />
+        <path d="M14 9C9 9 6 6 6 2c5 0 8 3 8 7Z" />
+        <path d="M14 11c5 0 8-3 8-7-5 0-8 3-8 7Z" />
+      </svg>
+      <span class="divider__line"></span>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- SECTION 4 — TRAVEL MISSION (체크리스트)                    -->
+    <!-- ========================================================= -->
+    <section class="section" id="mission">
+      <h2 class="section__title reveal">
+        <svg class="title-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="4" y="8" width="16" height="12" rx="2.5" />
+          <path d="M9 8V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M12 12v4" />
+        </svg>
+        이번 여행 미션
+      </h2>
+      <p class="section__hint reveal">하나씩 완료하면 체크해줘</p>
+
+      <ul class="checklist card reveal" id="checklist">
+        <!-- 각 항목: 라벨 전체가 터치 영역(최소 44px) -->
+        <li class="checklist__item">
+          <label>
+            <input type="checkbox" data-key="m1" />
+            <span class="checklist__box" aria-hidden="true"></span>
+            <span class="checklist__text">같이 사진 많이 찍기</span>
+          </label>
+        </li>
+        <li class="checklist__item">
+          <label>
+            <input type="checkbox" data-key="m2" />
+            <span class="checklist__box" aria-hidden="true"></span>
+            <span class="checklist__text">가장 마음에 드는 사진을 여행 대표 사진으로 선정하기</span>
+          </label>
+        </li>
+        <li class="checklist__item">
+          <label>
+            <input type="checkbox" data-key="m3" />
+            <span class="checklist__box" aria-hidden="true"></span>
+            <span class="checklist__text">다이어트는 잠시 잊고 맛있는 거 먹기</span>
+          </label>
+        </li>
+        <li class="checklist__item">
+          <label>
+            <input type="checkbox" data-key="m4" />
+            <span class="checklist__box" aria-hidden="true"></span>
+            <span class="checklist__text">재밌게 수영하기</span>
+          </label>
+        </li>
+        <li class="checklist__item">
+          <label>
+            <input type="checkbox" data-key="m5" />
+            <span class="checklist__box" aria-hidden="true"></span>
+            <span class="checklist__text">
+              손잡고 밤산책하기
+              <em class="checklist__note">(더우면 즉시 포기 가능)</em>
+            </span>
+          </label>
+        </li>
+        <li class="checklist__item">
+          <label>
+            <input type="checkbox" data-key="m6" />
+            <span class="checklist__box" aria-hidden="true"></span>
+            <span class="checklist__text">서로의 가장 좋아하는 모습 말해주기</span>
+          </label>
+        </li>
+        <li class="checklist__item">
+          <label>
+            <input type="checkbox" data-key="m7" />
+            <span class="checklist__box" aria-hidden="true"></span>
+            <span class="checklist__text">사랑한다고 많이 말하기</span>
+          </label>
+        </li>
+        <li class="checklist__item">
+          <label>
+            <input type="checkbox" data-key="m8" />
+            <span class="checklist__box" aria-hidden="true"></span>
+            <span class="checklist__text">꽃 준 사람 안아주고 뽀뽀해주고 사랑해주기</span>
+          </label>
+        </li>
+        <li class="checklist__item">
+          <label>
+            <input type="checkbox" data-key="m9" />
+            <span class="checklist__box" aria-hidden="true"></span>
+            <span class="checklist__text">숙소에서 고생한 만큼 푹 쉬기</span>
+          </label>
+        </li>
+        <li class="checklist__item">
+          <label>
+            <input type="checkbox" data-key="m10" />
+            <span class="checklist__box" aria-hidden="true"></span>
+            <span class="checklist__text">행복한 추억 만들기</span>
+          </label>
+        </li>
+      </ul>
+
+      <!-- 진행도 표시: 게이지 바 + 텍스트 -->
+      <div class="progress reveal">
+        <div
+          class="progress__bar"
+          role="progressbar"
+          aria-valuemin="0"
+          aria-valuemax="10"
+          aria-valuenow="0"
+          aria-label="여행 미션 진행도"
+        >
+          <span class="progress__fill" id="progressFill"></span>
+        </div>
+        <p class="progress__text" id="progress">0 / 10 완료</p>
+      </div>
+    </section>
+
+    <!-- 섹션 구분 — 작은 잎사귀 디바이더 -->
+    <div class="divider reveal" aria-hidden="true">
+      <span class="divider__line"></span>
+      <svg class="divider__leaf" viewBox="0 0 28 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 14V3" />
+        <path d="M14 9C9 9 6 6 6 2c5 0 8 3 8 7Z" />
+        <path d="M14 11c5 0 8-3 8-7-5 0-8 3-8 7Z" />
+      </svg>
+      <span class="divider__line"></span>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- SECTION 5 — TODAY'S PROMISE                               -->
+    <!-- ========================================================= -->
+    <section class="section" id="promise">
+      <h2 class="section__title reveal">
+        <svg class="title-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3c.6 5 1.5 6.5 7 7-5.5.5-6.4 2-7 7-.6-5-1.5-6.5-7-7 5.5-.5 6.4-2 7-7Z" />
+          <path d="M18.5 14c.2 1.8.6 2.4 2.5 2.7-1.9.3-2.3.9-2.5 2.6-.2-1.7-.6-2.3-2.5-2.6 1.9-.3 2.3-.9 2.5-2.7Z" />
+        </svg>
+        오늘의 약속
+      </h2>
+      <article class="card promise-card reveal">
+        <ul class="promise-list">
+          <li>서로 눈치 보지 않기</li>
+          <li>하고 싶은 거 사고 싶은 거 솔직하게 말하기</li>
+          <li>맛있는 거 참지 않기</li>
+          <li>사진 찍자고 하면 찍어주기</li>
+          <li>여행 동안은 걱정 잠시 내려놓기</li>
+          <li>서로에게 집중하기</li>
+          <li>행복하게 놀기</li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- SECTION 6 — FINAL MESSAGE (배경 톤 변경)                   -->
+    <!-- ========================================================= -->
+    <section class="section section--warm" id="final">
+      <article class="final card reveal">
+        <h2 class="final__title">
+          <svg class="title-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="6" width="18" height="13" rx="2.5" />
+            <path d="M4 8l8 6 8-6" />
+          </svg>
+          마지막 한마디
+        </h2>
+        <p>꽃은 시간이 지나면 시들겠지만,</p>
+        <p>이번 여행에서 함께 만든 추억은 오래오래 남았으면 좋겠어.</p>
+        <p class="final__name">다연아,</p>
+        <p>경주 여행 재밌게 놀고 푹 쉬다 오자 ❤️</p>
+        <p class="final__love">항상 고맙고 사랑해</p>
+      </article>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- SECTION 7 — FOOTER                                        -->
+    <!-- ========================================================= -->
+    <footer class="footer">
+      <svg class="footer__mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5 19C5 11 11 5 19 5c0 8-6 14-14 14Z" />
+        <path d="M5 19c4-4 8-7 12-9" />
+      </svg>
+      <p class="footer__sign">2026 여름, 너에게<br />대경이가 다연이에게 ♡</p>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
