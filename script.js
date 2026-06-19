@@ -97,6 +97,11 @@
     const petalField = document.getElementById("petalField");
     if (!boxes.length) return;
 
+    // 진행바 최대값을 실제 항목 수에 맞춤 (항목 추가/삭제 시에도 어긋나지 않게)
+    if (barEl) {
+      barEl.setAttribute("aria-valuemax", String(boxes.length));
+    }
+
     // 직전 완료 여부 — "전부 완료"로 새로 전환될 때만 보상 1회
     let wasComplete = false;
 
@@ -131,6 +136,8 @@
       }
       if (barEl) {
         barEl.setAttribute("aria-valuenow", String(done));
+        // 스크린리더가 "3 / 10 완료"처럼 읽도록 텍스트 값도 갱신
+        barEl.setAttribute("aria-valuetext", `${done} / ${total} 완료`);
       }
 
       // 사용자가 직접 체크해서 "방금" 전부 완료된 순간에만 보상 1회
@@ -260,7 +267,9 @@
           }
         });
       },
-      { threshold: 0.25 }
+      // 카드 상단이 화면 하단에서 12% 올라오면 트리거.
+      // threshold를 0으로 두어 카드가 뷰포트보다 훨씬 길어도 반드시 발동.
+      { threshold: 0, rootMargin: "0px 0px -12% 0px" }
     );
 
     io.observe(card);
